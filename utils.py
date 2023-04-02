@@ -1,31 +1,28 @@
 import requests
 import json
 from datetime import datetime
+import os
+
+API_KEY = os.getenv('EXCHANGE_RATE_API_KEY')
 
 def get_currency_rate(base):
-
     """будет запрашивать курс валюты от API и возвращать его в виде float"""
 
     url = "https://api.apilayer.com/exchangerates_data/latest"
 
-    headers = {
-        "apikey": "PqLpB9dXCVJgapkHKxKCJOfz9CUXIgLt"
-    }
+    response = requests.get(url, headers={'apikey': API_KEY}, params={'base': base})
 
-    response = requests.get(url, headers=headers, params={'base': base})
     rate = response.json()['rates']['RUB']
     return rate
 
 
 def save_to_json(data):
-
     """будет сохранять данные в JSON-файл"""
 
     pass
 
 
 def main():
-
     """будет запрашивать у пользователя название валюты, выводить курс валюты в консоль,
     сохранять данные в json файл и предлагать пользователю выбрать действие: продолжить или выйти."""
 
@@ -40,8 +37,8 @@ def main():
 
         print(f"Курс {currency} к рублю {rate}")
 
-        data = {'currency': currency, 'rate': rate, 'timestamp': timestamp}
-        save_to_json(data)
+        # data = {'currency': currency, 'rate': rate, 'timestamp': timestamp}
+        # save_to_json(data)
 
         choice = input('Что дальше? 1 - продолжить, 2 - завершить ')
         if choice == "1":
@@ -54,4 +51,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # get_currency_rate('USD')
